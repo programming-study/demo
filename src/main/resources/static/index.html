@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>add</title>
+    <script src="js/angular.min.js"></script>
+</head>
+<body>
+<div ng-app="myApp" ng-controller="addAll">
+    <label>Name</label>
+    <input type="text"  ng-model="user.name"/>
+    <br/>
+    <label>Id</label>
+    <input type="number" ng-model="user.id"/>
+    <br/>
+    <button ng-click="greeting()">greeting</button>
+
+    <br/>
+    <button ng-click="getByName(user.name)">getByName</button>
+    <br/>
+    <button ng-click="getById(user.id)">getById</button>
+    <br/>
+    <button ng-click="getByRequestId(user.id)">getByRequestId</button>
+    <br/>
+    <button ng-click="updateUser(user)">updateUser</button>
+
+    <hr/>
+    <label>Name</label>
+    <input type="text" required ng-model="data.name"/>
+    <br/>
+    <label>Id</label>
+    <input type="number" ng-model="data.id"/>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller("addAll", function ($scope, $http) {
+        $scope.user = {};
+        $scope.greeting = function () {
+            $http.get('/user/greeting').then(function (resp) {
+                $scope.data = resp.data;
+            }, function (error) {
+                console.log(error);
+            });
+
+        }
+
+        $scope.getByName = function (name) {
+            $http.get('/user/getByName/'+name).then(function (resp) {
+                $scope.data = resp.data;
+            }, function (error) {
+                console.log(error);
+            });
+
+        }
+
+        $scope.getById = function (id) {
+            $http.get('/user/getById/'+id).then(function (resp) {
+                $scope.data = resp.data;
+            }, function (error) {
+                console.log(error);
+            });
+
+        }
+
+        $scope.getByRequestId = function (id) {
+            $http.get('/user/getByRequestId?id='+id).then(function (resp) {
+                $scope.data = resp.data;
+            }, function (error) {
+                console.log(error);
+            });
+
+        }
+
+        $scope.updateUser = function (user) {
+            $http.post('/user/updateUser',user).then(function (resp) {
+                $scope.data = resp.data;
+            }, function (error) {
+                console.log(error);
+            });
+
+        }
+
+    });
+</script>
+</body>
+
+</html>
